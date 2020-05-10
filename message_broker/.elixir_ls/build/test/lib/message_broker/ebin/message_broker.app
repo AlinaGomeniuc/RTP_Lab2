@@ -1,0 +1,10 @@
+{application,message_broker,
+             [{applications,[kernel,stdlib,elixir,logger,poison]},
+              {description,"message_broker"},
+              {modules,['Elixir.Broadcaster',
+                        'Elixir.MessageBroker.Application',
+                        'Elixir.MessageParser','Elixir.MessageRegistry',
+                        'Elixir.SubscriberData','Elixir.UDPServer']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.MessageBroker.Application',[]}}]}.

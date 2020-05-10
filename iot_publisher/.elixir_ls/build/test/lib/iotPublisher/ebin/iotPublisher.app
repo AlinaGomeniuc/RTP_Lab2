@@ -1,0 +1,11 @@
+{application,iotPublisher,
+             [{applications,[kernel,stdlib,elixir,logger,poison,
+                             eventsource_ex]},
+              {description,"iotPublisher"},
+              {modules,['Elixir.Calculate','Elixir.Event_Processor',
+                        'Elixir.Feeder','Elixir.IotPublisher.Application',
+                        'Elixir.MySupervisor','Elixir.Publisher',
+                        'Elixir.Request']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.IotPublisher.Application',[]}}]}.

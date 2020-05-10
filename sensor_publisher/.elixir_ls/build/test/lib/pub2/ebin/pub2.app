@@ -1,0 +1,11 @@
+{application,pub2,
+             [{applications,[kernel,stdlib,elixir,logger,poison,
+                             eventsource_ex]},
+              {description,"pub2"},
+              {modules,['Elixir.Calculate','Elixir.Event_Processor',
+                        'Elixir.Feeder','Elixir.MySupervisor',
+                        'Elixir.Publisher','Elixir.Request',
+                        'Elixir.SensorPublisher.Application']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.SensorPublisher.Application',[]}}]}.
