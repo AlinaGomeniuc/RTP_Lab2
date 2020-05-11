@@ -5,8 +5,8 @@ defmodule MessageRegistry do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def add(registry_pid, packet) do
-    GenServer.cast(registry_pid, {:add_message, packet})
+  def add(packet) do
+    GenServer.cast(__MODULE__, {:add_message, packet})
   end
 
   def get(topic) do
@@ -26,6 +26,7 @@ defmodule MessageRegistry do
       messages = messages ++ [message]
       registry_new_state = Map.put(registry_state, topic, messages)
 
+      IO.inspect(Map.get(registry_new_state, "aggregator"))
       {:noreply, registry_new_state}
     else
       registry_new_state = Map.put(registry_state, topic, [message])

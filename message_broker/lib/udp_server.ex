@@ -20,14 +20,11 @@ defmodule UDPServer do
         packet = MessageParser.decode_packet(encoded_packet)
         {type, packet} = MessageParser.get_type(packet)
 
-        IO.inspect(data)
-
         case type do
-          "message" -> MessageRegistry.add(MessageRegistry, packet)
-          "subscribe" -> SubscriberData.subscribe(SubscriberData, data, packet)
-          "unsubscribe" -> SubscriberData.unsubscribe(SubscriberData, data, packet)
+          "message" -> MessageRegistry.add(packet)
+          "subscribe" -> SubscriberData.subscribe(data, packet)
+          "unsubscribe" -> SubscriberData.unsubscribe(data, packet)
         end
-
     end
     loop_acceptor(socket)
   end

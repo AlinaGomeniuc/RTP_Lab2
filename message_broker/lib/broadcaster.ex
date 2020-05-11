@@ -6,7 +6,7 @@ defmodule Broadcaster do
   end
 
   def broadcast_data(socket) do
-    SubscriberData.broadcast_messages(SubscriberData, socket)
+    SubscriberData.broadcast_messages(socket)
     Process.sleep(10)
     broadcast_data(socket)
   end

@@ -6,16 +6,16 @@ defmodule SubscriberData do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def subscribe(subscriber_data_pid, data, packet) do
-    GenServer.cast(subscriber_data_pid, {:subscribe, data, packet})
+  def subscribe(data, packet) do
+    GenServer.cast(__MODULE__, {:subscribe, data, packet})
   end
 
-  def unsubscribe(subscriber_data_pid, data, packet) do
-    GenServer.cast(subscriber_data_pid, {:unsubscribe, data, packet})
+  def unsubscribe(data, packet) do
+    GenServer.cast(__MODULE__, {:unsubscribe, data, packet})
   end
 
-  def broadcast_messages(subscriber_data_pid, socket) do
-    GenServer.cast(subscriber_data_pid, {:broadcast_messages, socket})
+  def broadcast_messages(socket) do
+    GenServer.cast(__MODULE__, {:broadcast_messages, socket})
    end
 
   def init(_) do
@@ -73,12 +73,13 @@ defmodule SubscriberData do
       messages = MessageRegistry.get(topic)
       if !Enum.empty?(messages) do
         Enum.each(messages, fn message ->
+          message = Map.put(message, "topic", topic)
           encoded_message = Poison.encode!(message)
           Enum.each(hosts, fn host ->
             address = elem(host, 0)
             port = elem(host, 1)
             case :gen_udp.send(socket, address, port, encoded_message) do
-              :ok -> _a = 0;
+              :ok -> _a = 0
                 # Logger.info("Message sent to #{port} topic: #{topic}")
               {:error, reason} ->
                 Logger.info("Could not send packet! Reasaon: #{reason}")
