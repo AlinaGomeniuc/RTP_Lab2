@@ -71,7 +71,7 @@ defmodule SubscriberData do
     Enum.each(topics, fn topic ->
       hosts = Map.get(subscriber_registry_state, topic)
       messages = MessageRegistry.get(topic)
-      if !Enum.empty?(messages) do
+      if messages != nil do
         Enum.each(messages, fn message ->
           message = Map.put(message, "topic", topic)
           encoded_message = Poison.encode!(message)
@@ -79,13 +79,15 @@ defmodule SubscriberData do
             address = elem(host, 0)
             port = elem(host, 1)
             case :gen_udp.send(socket, address, port, encoded_message) do
-              :ok -> _a = 0
-                # Logger.info("Message sent to #{port} topic: #{topic}")
+              :ok ->
+                Logger.info("Message sent to #{port} topic: #{topic}")
               {:error, reason} ->
                 Logger.info("Could not send packet! Reasaon: #{reason}")
             end
           end)
         end)
+      else
+        Logger.info("Error! Not such topic #{topic}")
       end
     end)
     {:noreply, subscriber_registry_state}

@@ -77,7 +77,9 @@ defmodule TimestampStreamer do
 
       if !Enum.empty?(final_message_list) do
         Enum.each(final_message_list, fn message ->
-            :gen_udp.send(socket, '127.0.0.1', 6161, Poison.encode!(message))
+            case :gen_udp.send(socket, '127.0.0.1', 6161, Poison.encode!(message)) do
+              :ok -> IO.inspect(Poison.encode!(message))
+            end
         end)
       end
     end

@@ -1,0 +1,9 @@
+{application,forecast_subscriber,
+             [{applications,[kernel,stdlib,elixir,logger,poison]},
+              {description,"forecast_subscriber"},
+              {modules,['Elixir.Aggregator','Elixir.Calculate',
+                        'Elixir.Fetcher','Elixir.Forecast',
+                        'Elixir.ForecastSubscriber.Application']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.ForecastSubscriber.Application',[]}}]}.

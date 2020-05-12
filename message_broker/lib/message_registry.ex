@@ -26,7 +26,6 @@ defmodule MessageRegistry do
       messages = messages ++ [message]
       registry_new_state = Map.put(registry_state, topic, messages)
 
-      IO.inspect(Map.get(registry_new_state, "aggregator"))
       {:noreply, registry_new_state}
     else
       registry_new_state = Map.put(registry_state, topic, [message])

@@ -3,10 +3,18 @@ defmodule PrinterSubscriber.Application do
 
    def start(_type, _args) do
 
+    port = 4052
+    opts = [:binary, active: false]
+    socket = case :gen_udp.open(port, opts) do
+      {:ok, socket} -> socket
+      {:error, _reason} ->
+        Process.exit(self(), :normal)
+    end
+
     children = [
       %{
-        id: Printer_Subscriber,
-        start: {Printer_Subscriber, :start_link, [4051]}
+        id: Fetcher,
+        start: {Fetcher, :start_link, [socket]}
       }
     ]
 
