@@ -30,6 +30,7 @@ defmodule SubscriberData do
     topics = get_topics(topic)
 
     subscriber_registry_new_state =  Enum.reduce(topics, subscriber_registry_state, fn topic, acc ->
+      Logger.info("Succesfull subscribtion to #{topic}")
       if Map.has_key?(subscriber_registry_state, topic) do
         subscribers = Map.get(subscriber_registry_state, topic)
         subscribers = subscribers ++ [subscriber]
@@ -53,6 +54,7 @@ defmodule SubscriberData do
         if Enum.member?(subscribers, subscriber) do
           subscribers = List.delete(subscribers, subscriber)
           Map.put(acc, topic, subscribers)
+          Logger.info("Succesfull unsubscribed from #{topic}")
         else
           Logger.info("Error! Not subscribed to topic #{topic}")
           subscriber_registry_state
@@ -78,12 +80,7 @@ defmodule SubscriberData do
           Enum.each(hosts, fn host ->
             address = elem(host, 0)
             port = elem(host, 1)
-            case :gen_udp.send(socket, address, port, encoded_message) do
-              :ok ->
-                Logger.info("Message sent to #{port} topic: #{topic}")
-              {:error, reason} ->
-                Logger.info("Could not send packet! Reasaon: #{reason}")
-            end
+            :gen_udp.send(socket, address, port, encoded_message)
           end)
         end)
       else

@@ -18,6 +18,11 @@ defmodule ForecastSubscriber.Application do
       },
 
       %{
+        id: Forecast,
+        start: {Forecast, :start_link, [socket]}
+      },
+
+      %{
         id: Aggregator,
         start: {Aggregator, :start_link, [socket]}
       }

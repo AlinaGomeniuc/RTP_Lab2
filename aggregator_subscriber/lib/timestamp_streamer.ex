@@ -76,17 +76,21 @@ defmodule TimestampStreamer do
       end)
 
       if !Enum.empty?(final_message_list) do
-        Enum.each(final_message_list, fn message ->
-            case :gen_udp.send(socket, '127.0.0.1', 6161, Poison.encode!(message)) do
-              :ok -> IO.inspect(Poison.encode!(message))
-            end
-        end)
+        publish_message(final_message_list, socket)
       end
     end
 
 
     Process.send_after(self(), :time_stream, 1000)
     {:noreply, {%{}, socket}}
+  end
+
+  def publish_message(final_message_list, socket)do
+    Enum.each(final_message_list, fn message ->
+      case :gen_udp.send(socket, '127.0.0.1', 6161, Poison.encode!(message)) do
+        :ok -> IO.inspect(Poison.encode!(message))
+      end
+    end)
   end
 
   @spec get_appropiate_sensor_data(any, any) :: nil | %{optional(<<_::40>>) => float}

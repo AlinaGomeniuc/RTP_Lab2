@@ -5,7 +5,7 @@ defmodule Aggregator do
     GenServer.start_link(__MODULE__, socket, name: __MODULE__)
   end
 
-  def send_forecast(forecast_sensor_tuple) do
+  def publish_forecast(forecast_sensor_tuple) do
     GenServer.cast(__MODULE__, {:collect_forecast, forecast_sensor_tuple})
   end
 

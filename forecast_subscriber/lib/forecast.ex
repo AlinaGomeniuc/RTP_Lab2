@@ -1,6 +1,19 @@
 defmodule Forecast do
+  use GenServer
+
+  def start_link(socket) do
+    GenServer.start_link(__MODULE__, socket, name: __MODULE__)
+  end
 
   def generate_forecast(packet) do
+    GenServer.cast(__MODULE__, {:generate_forecast, packet})
+  end
+
+  def init(socket) do
+    {:ok, socket}
+  end
+
+  def handle_cast({:generate_forecast, packet}, forecast_state) do
     pressure = packet["pressure"]
     temperature = packet["temperature"]
     light = packet["light"]
@@ -24,7 +37,9 @@ defmodule Forecast do
       true -> "JUST_A_NORMAL_DAY"
     end
 
-    Aggregator.send_forecast([forecast, packet])
+    Aggregator.publish_forecast([forecast, packet])
+
+    {:noreply, forecast_state}
   end
 
 end
