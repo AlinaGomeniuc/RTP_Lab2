@@ -30,7 +30,7 @@ defmodule SubscriberData do
     topics = get_topics(topic)
 
     subscriber_registry_new_state =  Enum.reduce(topics, subscriber_registry_state, fn topic, acc ->
-      Logger.info("Succesfull subscribtion to #{topic}")
+      Logger.info("Successfull subscribtion to #{topic}")
       if Map.has_key?(subscriber_registry_state, topic) do
         subscribers = Map.get(subscriber_registry_state, topic)
         subscribers = subscribers ++ [subscriber]

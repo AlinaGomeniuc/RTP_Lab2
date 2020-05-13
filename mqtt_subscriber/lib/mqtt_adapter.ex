@@ -14,7 +14,7 @@ defmodule MqttAdapter do
   def init(port) do
     socket = case :gen_tcp.connect('localhost', port, [:binary, active: false]) do
       {:ok, socket} ->
-        Logger.info("Connected to mosquitto")
+        # Logger.info("Connected to mosquitto")
         socket
       {:error, reason} ->
         Logger.info("Could not make a tcp connection!")
@@ -103,9 +103,9 @@ defmodule MqttAdapter do
 
     <<_,_,_,return_code>> = packet
 
-    if return_code == 0 do
-      Logger.info("Acknowledge return code: #{return_code}")
-    else
+    if return_code != 0 do
+      # Logger.info("Acknowledge return code: #{return_code}")
+    # else
       Logger.error("Acknowledge error. Return code #{return_code}")
     end
   end

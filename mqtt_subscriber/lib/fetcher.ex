@@ -14,9 +14,11 @@ defmodule Fetcher do
   end
 
   def subscribe_data (socket) do
+    topic = UserInput.get_topic()
+
     packet = Map.new()
     packet = Map.put(packet, "type", "subscribe")
-    packet = Map.put(packet, "topic", "aggregator")
+    packet = Map.put(packet, "topic", topic)
     encoded_package = Poison.encode!(packet)
     host = '127.0.0.1'
     case :gen_udp.send(socket, host, 6161, encoded_package) do
@@ -28,10 +30,10 @@ defmodule Fetcher do
     case :gen_udp.recv(socket, 0) do
       {:ok, data} ->
         packet = elem(data, 2)
-        MqttAdapter.publish_message("aggregator", packet)
+        MqttAdapter.publish_message("mqtt", packet)
 
       {:error, reason} ->
-        Logger.info("recv error in Fetcher get_message! Reason #{reason}")
+        Logger.info("recv error in Fetcher! Reason #{reason}")
       end
 
       receive_data(socket)
